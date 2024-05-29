@@ -12,7 +12,6 @@ export default function ListaScreen() {
     {
       foto: 'https://lh6.googleusercontent.com/proxy/28LhFx4KWUk-XXd4WeSbpmssd7HzMogWq1WdvnPxxpmZSN1zOrzNPTe9uP7ivTH9b3SS-EhYAtMe8w1glvkCGuk_XQeMKNRp1JMqMbKcNr_R9TEW8alkQBpqNx4rYLGlh5Lsd4AxVw9IX2b8mW2moA-zOQ',
       modelo: 'Sandero',
-      marca: 'Renault',
       ano: '2015',
       status: '',
     },
@@ -28,7 +27,6 @@ export default function ListaScreen() {
               <Image style={estilos.foto} source={{ uri: item.foto }} />
               <View style={estilos.txtItens}>
               <Text style={estilos.modelo}>Modelo: {item.modelo}</Text>
-              <Text style={estilos.marca}>Fabricante: {item.marca}</Text>
               <Text style={estilos.ano}>Ano: {item.ano}</Text>
               <Text style={estilos.status}>Status:{item.status}</Text>
               <Pressable style={estilos.botao}>

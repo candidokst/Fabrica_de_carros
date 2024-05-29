@@ -9,9 +9,8 @@ import {
 export default function CadastroScreen({ navigation }) {
   return (
     <View style={estilos.container}>
-      <Text style={estilos.textos}>Olá mundo</Text>
       <Pressable /*onPress para adicionar a foto*/ style={estilos.botao}>
-        <Text style={estilos.textos}>Escolher foto</Text>
+        <Text style={estilos.textos}>Insira a imagem do veículo</Text>
       </Pressable>
       <TextInput
         placeholderTextColor="#000"
@@ -50,16 +49,18 @@ const estilos = StyleSheet.create({
     backgroundColor: 'black',
   },
   textos: {
-    color: 'white',
-    textAlign: 'center'
+    color: 'black',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    width: '100vw'
   },
   botao: {
-    backgroundColor: '#00FF00',
-    padding: 10,
-    width: '80%',
+    backgroundColor: 'lightgray',
+    padding: 80,
+    marginBottom: 25,
+    width: '100%',
     alignItems: 'center',
-    borderRadius: 5,
-    marginVertical: 10,
   },
   input: {
     width: '80%',
