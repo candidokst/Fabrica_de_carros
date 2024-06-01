@@ -4,12 +4,36 @@ import {
   StyleSheet,
   Pressable,
   TextInput,
+  Image,
 } from 'react-native';
+import { useState, useEffect } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function CadastroScreen({ navigation }) {
+
+    const [foto, setFoto]= useState(null)
+  const escolherImagem = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setFoto(result.assets[0].uri);
+    }
+  };
   return (
     <View style={estilos.container}>
-      <Pressable /*onPress para adicionar a foto*/ style={estilos.botao}>
+     <Image
+        style={estilos.foto}
+        source={{
+          uri: foto,
+        }}
+      />
+      <Pressable onPress={escolherImagem} style={estilos.botao}>
         <Text style={estilos.textos}>Insira a imagem do veículo</Text>
       </Pressable>
       <TextInput
