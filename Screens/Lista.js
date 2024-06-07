@@ -6,7 +6,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-
+import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -14,15 +14,23 @@ export default function ListaScreen() {
   const [carros, setCarros] = useState([]);
 
   const buscarCarro = async () => {
-    const carros = JSON.parse(await AsyncStorage.getItem('@carro')) || [];
+    try {
+      const jsonValue = await AsyncStorage.getItem('@carro');
+      const carros = jsonValue != null ? JSON.parse(jsonValue) : [];
+      setCarros(carros);
+    } catch (e) {
+      console.error('Erro ao buscar o carro: ', e);
+    }
   };
-// AsyncStorage.clear();
+
   useEffect(() => {
-    buscarCarro();
-  }, []);
-}
+    isFocused && buscarCarro();
+     
+  }, [isFocused]);
 
+const isFocused = useIsFocused();
 
+  
   return (
     <View style={estilos.container}>
       <Text style={estilos.textos}>Ola mundo</Text>

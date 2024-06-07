@@ -5,15 +5,18 @@ import {
   Pressable,
   TextInput,
   Image,
+  Vibration,
 } from 'react-native';
 
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CadastroScreen({ navigation }) {
+  
+  // useEffect(() => {
+  //    AsyncStorage.clear(); 
+  // }, []);
 
   const [carro, setCarro] = useState({
     modelo: '',
@@ -37,22 +40,27 @@ export default function CadastroScreen({ navigation }) {
     }
   };
 
-  // Função para salvar os dados no AsyncStorage
-  const salvarCarro = async () => {
+  const cadastrarCarro = async () => {
+    const novoCarro = { ...carro };
     try {
-      let carrosListados = JSON.parse(await AsyncStorage.getItem('@carro'));
-      if (!carrosListados) {
-        carrosListados = [carro];
+      let carros = JSON.parse(await AsyncStorage.getItem('@carro'));
+      if (!carros) {
+        carros = [novoCarro];
       } else {
-        carrosListados.unshift(carro);
+        carros.unshift(novoCarro);
       }
-      await AsyncStorage.setItem('@carro', JSON.stringify(carrosListados));
+      await AsyncStorage.setItem('@carro', JSON.stringify(carros));
       console.log('Salvou!!');
+      Vibration.vibrate();
+      navigation.navigate('Home');
     } catch (error) {
       console.log(error);
     }
+  };
 
   console.log(carro);
+
+  //-----------------------------------------------------
 
   return (
     <View style={estilos.container}>
@@ -88,7 +96,7 @@ export default function CadastroScreen({ navigation }) {
       <View style={estilos.footer}>
         <Pressable
           style={estilos.botaoFinal}
-          onPress={salvarCarro}
+          onPress={cadastrarCarro}
         >
           <Text style={estilos.textos}>Cadastrar</Text>
         </Pressable>
@@ -96,7 +104,6 @@ export default function CadastroScreen({ navigation }) {
     </View>
   );
 }
-
 
 const estilos = StyleSheet.create({
   container: {
@@ -139,5 +146,6 @@ const estilos = StyleSheet.create({
     width: 280,
     height: 280,
     borderRadius: 4,
+    marginBottom: 10
   },
 });
