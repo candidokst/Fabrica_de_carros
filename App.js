@@ -4,15 +4,12 @@ import HomeScreen from './Screens/HomeScreen';
 import CadastroScreen from './Screens/CadastroScreen';
 import ListaScreen from './Screens/Lista';
 
-import { useState } from 'react';
-
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator //initialRouteName="ListaScreen"
-      >
+      <Stack.Navigator>
         <Stack.Screen
           name="Home"
           component={HomeScreen}

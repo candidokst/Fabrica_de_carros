@@ -6,29 +6,26 @@ import {
   TextInput,
   Image,
   Vibration,
+  TouchableOpacity
 } from 'react-native';
-
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CadastroScreen({ navigation }) {
-  
-  // useEffect(() => {
-  //    AsyncStorage.clear(); 
-  // }, []);
 
+  //Criação do objeto que sera o storage
   const [carro, setCarro] = useState({
     modelo: '',
     marca: '',
     foto: null,
     ano: 0,
+    status: 'A confirmar'
   });
+  //Criação do objeto que sera o storage
 
-  // -------------- // Criando a função pra escolher a foto // -------------- //
-
+  //Função para escolher imagem do armazenamento(Permissão não necessária)
   const escolherImagem = async () => {
-    // Permissões não são necessárias para abrir a biblioteca de fotos.
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -38,11 +35,12 @@ export default function CadastroScreen({ navigation }) {
     if (!result.cancelled) {
       setCarro({ ...carro, foto: result.assets[0].uri });
     }
-  };
+  }
+  //Função para escolher imagem do armazenamento(Permissão não necessária)
 
+  //Função para envio de informações ao storage
   const cadastrarCarro = async () => {
     const novoCarro = { ...carro };
-    try {
       let carros = JSON.parse(await AsyncStorage.getItem('@carro'));
       if (!carros) {
         carros = [novoCarro];
@@ -50,24 +48,21 @@ export default function CadastroScreen({ navigation }) {
         carros.unshift(novoCarro);
       }
       await AsyncStorage.setItem('@carro', JSON.stringify(carros));
-      console.log('Salvou!!');
       Vibration.vibrate();
       navigation.navigate('Home');
-    } catch (error) {
-      console.log(error);
-    }
   };
-
-  console.log(carro);
-
-  //-----------------------------------------------------
+  //Função para envio de informações ao storage
 
   return (
     <View style={estilos.container}>
-      <Pressable onPress={escolherImagem} style={estilos.botao}>
+      {carro.foto ? (
+        <Image style={estilos.foto} source={{ uri: carro.foto }} />
+      ) : (
+        <TouchableOpacity style={estilos.botao} onPress={escolherImagem}>
+          <Text style={estilos.textos}>Escolher foto</Text>
+        </TouchableOpacity>
+      )}
         <Text style={estilos.textos}>Escolher foto</Text>
-      </Pressable>
-      {carro.foto && <Image style={estilos.foto} source={{ uri: carro.foto }} />}
       <TextInput
         placeholderTextColor="#000"
         fontWeight="bold"
@@ -112,8 +107,10 @@ const estilos = StyleSheet.create({
     backgroundColor: 'black',
   },
   textos: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
+    fontWeight: 'bold',
+    justifyContent: 'center'
   },
   botao: {
     backgroundColor: '#00FF00',
@@ -143,9 +140,8 @@ const estilos = StyleSheet.create({
     borderRadius: 5,
   },
   foto: {
-    width: 280,
+    width: "100%",
     height: 280,
-    borderRadius: 4,
-    marginBottom: 10
+    marginBottom: 10,
   },
 });
