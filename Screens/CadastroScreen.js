@@ -19,7 +19,7 @@ export default function CadastroScreen({ navigation }) {
     modelo: '',
     marca: '',
     foto: null,
-    ano: 0,
+    ano: 'Ano',
     status: 'A confirmar'
   });
   //Criação do objeto que sera o storage
@@ -40,6 +40,10 @@ export default function CadastroScreen({ navigation }) {
 
   //Função para envio de informações ao storage
   const cadastrarCarro = async () => {
+    if(carro.modelo===''|| carro.marca===""|| carro.foto=== null || carro.ano===0){
+      alert("Preencha todos os dados corretamente")
+
+    }else{
     const novoCarro = { ...carro };
       let carros = JSON.parse(await AsyncStorage.getItem('@carro'));
       if (!carros) {
@@ -50,6 +54,7 @@ export default function CadastroScreen({ navigation }) {
       await AsyncStorage.setItem('@carro', JSON.stringify(carros));
       Vibration.vibrate();
       navigation.navigate('Home');
+    }
   };
   //Função para envio de informações ao storage
 
